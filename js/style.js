@@ -35,7 +35,7 @@ $('#back').click(function(){
 // ----------------------------------------------------------
 
 
-$('#button').click(function(){
+$('#click').click(function(){
 	window.scrollTo(0,$(window).height())
 });
 

@@ -40,10 +40,14 @@ header{
 #first-screen>section{
 
 	height: 100%;
-	width: 50%;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+#click:hover{
+	cursor: pointer;
 }
 
 
