@@ -258,7 +258,12 @@ a:hover{
 	background: black;
 }
 
-input{
+.continue{
+	background: transparent;
+	color: wheat;
+}
+
+input:not(.continue){
   
   border-width: 0 0 .2px 0;
   border-style: solid;
@@ -318,7 +323,7 @@ input[type="date"]:before {
 
 #token,#case,#application{
 	cursor: pointer;
-	-webkit-transition: .7s ease-in-out;
+	-webkit-transition: .25s ease-in-out;
 
 }
 
