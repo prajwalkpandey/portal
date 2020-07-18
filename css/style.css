@@ -175,6 +175,14 @@ a:hover{
 
 }
 
+textarea{
+	height: 25vh;
+	width: 65vw;
+	background: transparent;
+	padding: 10px;
+	color: wheat;
+}
+
 #service-img{
 	height: 100%;
 	width: 35%;
