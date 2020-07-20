@@ -161,6 +161,20 @@ a:hover{
 }
 
 
+table, th, td {
+	border: 1px solid black;
+	box-shadow: 0 0 5px #003366;
+	color: wheat;
+	padding: 10px;
+	font-family: 'MuseoModerno', sans-serif;
+}
+
+table button{
+	background: transparent;
+	color: wheat;
+}
+
+
 #box{
 	position: relative;
 	top: 5vh;
@@ -305,6 +319,12 @@ input[type="date"]:before {
 	input[type="date"]:focus:before,
 	input[type="date"]:valid:before {
 	content: "";
+}
+
+#show{
+	color: wheat;
+	font-family: 'MuseoModerno', sans-serif;
+
 }
 
 .flex{
