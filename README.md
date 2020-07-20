@@ -23,6 +23,6 @@ This entire registration process has been integrated so as to be hosted on a ser
   3.2. If the student wants to raise a case regarding the registration process, then they will have the option to fill up a form and submit, which shall be reviewed by the admin later.
   3.3. Once the entire registration process is over, they can choose to generate a token, which they shall have to present to the academic section within a prescribed time, thus ensring physical 
        presence and also marking an end to the registration process.
-4. If someone is an admin, they have to enter their email and password and that way they will be redirected to their home page, wherein they can view the students whose registrations are done and also have a look at
+4. If someone is an admin, they have to enter their credentials and that way they will be redirected to their home page, wherein they can view the students whose registrations are done and also have a look at
     applications filed.
       
