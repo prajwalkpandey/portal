@@ -1,4 +1,4 @@
-# portal
+#ONLINE REGISTRATION PORTAL FOR THE CONTINUING STUDENTS OF IIITG
 
 This repository contains the set of the codes for an online registration portal for the continuing students of IIIT Guwahati.
 
