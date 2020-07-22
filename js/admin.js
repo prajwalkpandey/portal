@@ -1,4 +1,4 @@
-$('input').click(function(){
+$('.view-button').click(function(){
     var name=$(this).attr('name');
     $("#back-div").css({
 		'height':10+"%"
@@ -17,4 +17,8 @@ $('#back').click(function(){
 	$('#show').css({
 		'height':0+"%"
 	});
+});
+
+$('#raised').click(function(){
+	window.location="./raised.html"
 });
