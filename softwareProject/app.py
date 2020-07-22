@@ -1,5 +1,6 @@
 from flask import Flask,jsonify,request,render_template,redirect,url_for,session
 import os
+from werkzeug.utils import secure_filename
 import openpyxl,json
 from flask_login import LoginManager,login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
@@ -15,14 +16,14 @@ backlogs=openpyxl.load_workbook(filename="Backlogs.xlsx")
 registrations=openpyxl.load_workbook(filename="Registrations.xlsx")
 raised=openpyxl.load_workbook(filename="raisedCases.xlsx")
 
-app = Flask(__name__)
+app = Flask(__name__,static_folder='static',static_url_path='')
 login_manager=LoginManager()
 db = SQLAlchemy()
 bcrypt=Bcrypt(app)
 
 @app.route('/')
 def index():
-    return jsonify({"data":"Hihahu"})
+    return render_template("index.html")
 
 @app.route('/student')
 def roll():
@@ -200,16 +201,28 @@ def fetchCase(rollno):
         caseN = obj.cell(row=i,column=1)
         if(caseN.value == rollno):
             std[rollno]=obj.cell(row=i,column=2).value
+            std["file"]=obj.cell(row=i,column=3).value
             print(std)
             return std
 
-def addCase(data):
+def addCase(r):
+    data=r.form
+    files=r.files
     rollno=data['rollno']
     issue=data['case']
+
+    proof1=files['proofOne']
+    proof1.save(secure_filename(rollno+proof1.filename))
+    os.chdir(os.path.dirname(__file__))
+    pwd=os.getcwd()
+    print(pwd+"/"+rollno+proof1.filename)
+    # proof2=files['proofTwo']
+
     obj = raised.active
     max_row =  obj.max_row
     obj.cell(row=max_row+1,column=1).value=rollno
     obj.cell(row=max_row+1,column=2).value=issue
+    obj.cell(row=max_row+1,column=3).value=pwd+"/"+rollno+proof1.filename
     raised.save(filename="raisedCases.xlsx")
     print("added")
     return jsonify({"saved":True})            
@@ -264,14 +277,22 @@ def admin():
             # print("=======================")
             allCases=fetchCases()
             print("=======================")
-            fetchCase(987654)
+            fetchCase('123456')
             return render_template("admin.html",data=allCases)
            #  return "<html>redirect</html>"
         else:
             return "<html> login</html>"
             print("login")
-    # else:
-    #     request.form['password']
+    # if request.method== 'POST':
+    #     if session.get('logged_in'):
+
+    #         f = request.files['file']
+    #         f.save(secure_filename(f.filename))
+            
+    #         return jsonify({"saved":True})
+    #     else:
+    #         return "<html> login</html>"
+    #         print("login")
 
 @app.route("/cases", methods=["GET","POST"])
 #@login_required
@@ -281,7 +302,8 @@ def cases():
     else:
         newCase=request.form
         print(newCase)
-        addCase(newCase)
+        # addCase(newCase)
+        addCase(request)
         # allCases=fetchCases()
         return jsonify({"saved":True})
 
