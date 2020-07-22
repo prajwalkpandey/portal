@@ -188,9 +188,20 @@ def fetchCases():
     max_row =  obj.max_row
     std={}
     for i in range(1,max_row+1):
-        std[i]=obj.cell(row=i,column=1).value
+        if obj.cell(row=max_row+1,column=4).value==1:
+            std[obj.cell(row=i,column=1).value]=obj.cell(row=i,column=2).value
     print(std)
     return std
+
+def acceptCase(rollno):
+    obj= raised.active
+    max_col =  obj.max_column
+    max_row =  obj.max_row
+    for i in range(2,max_row+1):
+        caseN = obj.cell(row=i,column=1)
+        if(caseN.value == rollno):
+            obj.cell(row=i,column=4).value=0
+            break
 
 def fetchCase(rollno):
     obj= raised.active
@@ -211,18 +222,21 @@ def addCase(r):
     rollno=data['rollno']
     issue=data['case']
 
-    proof1=files['proofOne']
-    proof1.save(secure_filename(rollno+proof1.filename))
-    os.chdir(os.path.dirname(__file__))
-    pwd=os.getcwd()
-    print(pwd+"/"+rollno+proof1.filename)
-    # proof2=files['proofTwo']
+    if bool(files):
+        proof1=files['proofOne']
+        proof1.save(secure_filename(rollno+proof1.filename))
+        os.chdir(os.path.dirname(__file__))
+        pwd=os.getcwd()
+        print(pwd+"/"+rollno+proof1.filename)
+        # proof2=files['proofTwo']
 
     obj = raised.active
     max_row =  obj.max_row
     obj.cell(row=max_row+1,column=1).value=rollno
     obj.cell(row=max_row+1,column=2).value=issue
-    obj.cell(row=max_row+1,column=3).value=pwd+"/"+rollno+proof1.filename
+    obj.cell(row=max_row+1,column=4).value=1
+    if bool(files):
+        obj.cell(row=max_row+1,column=3).value=pwd+"/"+rollno+proof1.filename
     raised.save(filename="raisedCases.xlsx")
     print("added")
     return jsonify({"saved":True})            
@@ -305,6 +319,14 @@ def cases():
         # addCase(newCase)
         addCase(request)
         # allCases=fetchCases()
+        return jsonify({"saved":True})
+
+@app.route("/accept", methods=["GET","POST"])
+#@login_required
+def accept():
+    if session.get('logged_in'):
+        rollno=request.form['rollno']
+        acceptCase(rollno)
         return jsonify({"saved":True})
 
 if __name__ == '__main__':
