@@ -21,23 +21,149 @@
 
 	<section class="screen">
 		<div class="container" id="box">
-			<form class="" id="" autocomplete="off">
+			<form class="" id="save_regis" autocomplete="off">
 				<h1>Choose Subjects</h1>
 				<div class="form-box">
+					<div class="flex" id="subjects">
+				
+					</div>
+
 					<div class="flex">
 						<!-- <div id="" class="new-button">
 							Continue
 						</div> -->
-						<input type="submit" name="Continue" value="Continue" class="new-button continue">
+						
+						
 					</div>
 					
 				</div>
 			</form>
+		<div class="block">
+			<button class="new-button continue" id="subjectsave">
+							Continue
+						</button>
+		</div>
 
 		</div>
 	</section>
+	<script language="javascript" type="text/javascript">
+	/*courses=[
+  
+        {
+            "id": "CS320", 
+            "name": "Software Engineering", 
+            "type": "Compulsory",
+            "faculty": "Angshuman Jana"
+        }, 
+        {
+            "id": "CS321",
+            "name": "Software Engineering Lab", 
+            "type": "Compulsory", 
+            "faculty": "Angshuman Jana"
+        },
+        {
+            "id": "CS330",
+            "name": "Compilers", 
+            "type": "Compulsory", 
+            "faculty": "Srinibas Swain"    
+        },
+         
+        {
+            "id": "HS308",
+            "name": "Politics", 
+            "type": "Elective", 
+            "faculty": "David Lal"    
+        }, 
+        {
+            "id": "HS310", 
+            "name": "Film Studies", 
+            "type": "Elective", 
+            "faculty": "Rajarshi Mitra and Arjab"
+        }    
+    
+	];*/
 
+const urlParams = new URLSearchParams(window.location.search);
+	const myParam = urlParams.get('roll');
+	const myParam_1=urlParams.get('semester');
+	console.log(myParam);
+	console.log(myParam_1);
+	//document.getElementById("roll").value=myParam;
+	//document.getElementById("Semester").value=myParam_1;
+	myFunction(myParam,myParam_1);
+	
+	function myFunction(roll_number,semester) {
+
+$.ajax({
+  url: "https://ce6d17cd7cc3.ngrok.io/courses/"+roll_number+"/"+semester,
+  data: '',
+  dataType: "json",
+  success: function(data){console.log(data)
+	  courses=data.courses;
+	  console.log(JSON.parse(courses))
+	  courses=JSON.parse(courses)
+	  backlogs=JSON.parse(data.backlogs)
+	  createTable(courses,backlogs)
+	
+}
+})
+};
+
+function createTable(courses){
+
+var course="";
+
+course+="<table>";
+course+="<tr>";
+		course+="<th>Compulsory</th>"
+	    course+="</tr>";
+courses.forEach((element, index, array) => {
+	    
+            course+="<tr>";
+            if(element.type === "Compulsory")
+            course+="<td>"+ element.id+" "+element.name+" "+element.faculty+" "+"</td>";
+            course+="</tr>";
+
+});
+        course+="</table>";
+
+
+
+        course+="<table>";
+course+="<tr>";
+		course+="<th>Electives</th>"
+	    course+="</tr>";
+	    ii=1;
+courses.forEach((element, index, array) => {
+            course+="<tr>";
+            if(element.type === "Elective")
+            course+="<td>"+ "<input value="+element.name+" id='type_radio_1' name='type_radio' type='radio' />" + element.id+" "+element.name+" "+element.faculty+" "+"</td>";
+            course+="</tr>";
+
+});
+        course+="</table>";
+
+course+="<table>";
+course+="<tr>";
+		course+="<th>Backlogs</th>"
+	    course+="</tr>";
+backlogs.forEach((element, index, array) => {
+	    
+            course+="<tr>";
+            course+="<td>"+ element.id+" "+element.name+"</td>";
+            course+="</tr>";
+
+});
+        course+="</table>";
+
+	document.getElementById("subjects").innerHTML=course;
+}
+    </script>
 	<script type="text/javascript" src="../js/preload.js"></script>
+	<script type="text/javascript" src="../js/new.js"></script>
+
+
+
 
 </body>
 </html>
