@@ -52,7 +52,7 @@ header{
 
 
 .screen{
-	height: calc(120vh);
+	height: calc(100vh);
 	background: black;
 	display: flex;
 	align-items: center;
