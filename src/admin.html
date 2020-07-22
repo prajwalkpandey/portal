@@ -30,6 +30,7 @@
 
 	<div class="screen">
 		<div class="flex">
+			<!--			
 			<table >
 				<tr>
 					<th>Roll No.</th>
@@ -42,6 +43,10 @@
 					<th>Fine</th>
 				</tr>
 			</table>
+				-->
+		<div class="flex" id="students">
+				
+		</div>
 		</div>
 		<div class="flex">
 			<input type="button" id="raised" name="" value="View Raised Applications">
@@ -53,5 +58,41 @@
 	<script type="text/javascript" src="../js/jquery.js"></script>
 	<script type="text/javascript" src="../js/admin.js"></script>
 
+<script>
+	
+	
+
+$.ajax({
+  url: "https://ce6d17cd7cc3.ngrok.io/registration",
+  data: '',
+  dataType: "json",
+  success: function(data){console.log(data)
+  createTable(data)
+}
+});
+	  
+function createTable(courses){
+
+var course="";
+
+course+="<table>";
+course+="<tr>";
+		course+="<th>Registered Students</th>"
+course+="</tr>";
+
+courses.forEach((element, index, array) => {
+	    
+            course+="<tr>";
+            course+="<td>"+ element.rollno+" "+element.name+" "+element.branch+" "+element.electives+" "+element.semester+" "+element.token+" "+element.status+" "+element.fine+" "+"</td>";
+            course+="</tr>";
+
+})
+        course+="</table>";
+
+	document.getElementById("students").innerHTML=course;
+}
+</script>
+
+	
 </body>
 </html>
