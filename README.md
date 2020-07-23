@@ -18,9 +18,9 @@ This entire registration process has been integrated so as to be hosted on a ser
 2. On doing so, the home page opens up. Clicking on "IIITG", moves to a section where one can choose to continue as a student or an admin.<br />
 3. If someone is a student, then: <br />
   3.1 They can proceed with the registration by filling up their roll number. <br />
-    3.1.1 On filling the roll number and clicking on continue, relevant information about the student gets fetched from the database. <br />
-    3.1.2 The student has to fill up their semester and then click on continue to able to choose the courses. <br />
-    3.1.3 On clicking on continue, the student will be shown the compulsory courses as well as the available electives for that semester. The electives will be present
+   > 3.1.1 On filling the roll number and clicking on continue, relevant information about the student gets fetched from the database. <br />
+   > 3.1.2 The student has to fill up their semester and then click on continue to able to choose the courses. <br />
+   >3.1.3 On clicking on continue, the student will be shown the compulsory courses as well as the available electives for that semester. The electives will be present
       in a checkbox manner. <br />
   3.2. If the student wants to raise a case regarding the registration process, then they will have the option to fill up a form and submit, which shall be reviewed by the admin later. <br />
   3.3. Once the entire registration process is over, they can choose to generate a token, which they shall have to present to the academic section within a prescribed time, thus ensuring physical <br />
