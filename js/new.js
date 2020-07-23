@@ -100,6 +100,40 @@ $('#token-form').submit(function(event){
 })
 
 })
+
+$('#admin-form').click(function(){
+        
+	const mail = document.getElementById("email").value
+	const psw =document.getElementById("password").value
+
+	
+
+	data={
+	"mail":mail,
+    	"psw":psw,
+	}
+
+	data=JSON.stringify(data);
+	console.log(data)
+	$.ajax({
+
+            type: "POST",
+              async: true,
+              crossDomain : true,
+              url: "https://aae0755ce200.ngrok.io/login",
+              dataType: "json",
+              data: data,
+              contentType: "application/json; charset=utf-8",
+              statusCode:
+              {
+              200: function() {
+			window.location.href="../src/admin.html"
+              	},
+              }
+          });
+});
+
+
 function FillForm(){
   document.getElementById("roll").value=roll
 }
