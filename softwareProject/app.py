@@ -1,5 +1,6 @@
 from flask import Flask,jsonify,request,render_template,redirect,url_for,session
 import os
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import openpyxl,json
 from flask_login import LoginManager,login_required, login_user, logout_user
@@ -20,9 +21,11 @@ app = Flask(__name__,static_folder='static',static_url_path='')
 login_manager=LoginManager()
 db = SQLAlchemy()
 bcrypt=Bcrypt(app)
+CORS(app)
 
 @app.route('/')
 def index():
+    return "<html> asd</html>"
     return render_template("index.html")
 
 @app.route('/student')
@@ -188,8 +191,8 @@ def fetchCases():
     max_row =  obj.max_row
     std={}
     for i in range(1,max_row+1):
-        if obj.cell(row=max_row+1,column=4).value==1:
-            std[obj.cell(row=i,column=1).value]=obj.cell(row=i,column=2).value
+#        if obj.cell(row=max_row+1,column=4).value is True:
+         std[obj.cell(row=i,column=1).value]=obj.cell(row=i,column=2).value
     print(std)
     return std
 
@@ -220,6 +223,7 @@ def addCase(r):
     data=r.form
     files=r.files
     rollno=data['rollno']
+    print(rollno)
     issue=data['case']
 
     if bool(files):
@@ -234,7 +238,7 @@ def addCase(r):
     max_row =  obj.max_row
     obj.cell(row=max_row+1,column=1).value=rollno
     obj.cell(row=max_row+1,column=2).value=issue
-    obj.cell(row=max_row+1,column=4).value=1
+    obj.cell(row=max_row+1,column=4).value=True
     if bool(files):
         obj.cell(row=max_row+1,column=3).value=pwd+"/"+rollno+proof1.filename
     raised.save(filename="raisedCases.xlsx")
