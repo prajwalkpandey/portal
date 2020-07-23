@@ -12,6 +12,8 @@ The details of the different folders are as follows:
 
 This entire registration process has been integrated so as to be hosted on a server.
 
+# Steps to be followed:
+
 1. Once the server has been turned on, this is how the software works. Run the "index.html" file. 
 2. On doing so, the home page opens up. Clicking on "IIITG", moves to a section where one can choose to continue as a student or an admin.
 3. If someone is a student, then:
