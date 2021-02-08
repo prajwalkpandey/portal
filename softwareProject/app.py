@@ -1,5 +1,7 @@
 from flask import Flask,jsonify,request,render_template,redirect,url_for,session
 import os
+from flask_cors import CORS
+from werkzeug.utils import secure_filename
 import openpyxl,json
 from flask_login import LoginManager,login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
@@ -15,14 +17,16 @@ backlogs=openpyxl.load_workbook(filename="Backlogs.xlsx")
 registrations=openpyxl.load_workbook(filename="Registrations.xlsx")
 raised=openpyxl.load_workbook(filename="raisedCases.xlsx")
 
-app = Flask(__name__)
+app = Flask(__name__,static_folder='static',static_url_path='')
 login_manager=LoginManager()
 db = SQLAlchemy()
 bcrypt=Bcrypt(app)
+CORS(app)
 
 @app.route('/')
 def index():
-    return jsonify({"data":"Hihahu"})
+    return "<html> asd</html>"
+    return render_template("index.html")
 
 @app.route('/student')
 def roll():
@@ -187,9 +191,20 @@ def fetchCases():
     max_row =  obj.max_row
     std={}
     for i in range(1,max_row+1):
-        std[i]=obj.cell(row=i,column=1).value
+#        if obj.cell(row=max_row+1,column=4).value is True:
+         std[obj.cell(row=i,column=1).value]=obj.cell(row=i,column=2).value
     print(std)
     return std
+
+def acceptCase(rollno):
+    obj= raised.active
+    max_col =  obj.max_column
+    max_row =  obj.max_row
+    for i in range(2,max_row+1):
+        caseN = obj.cell(row=i,column=1)
+        if(caseN.value == rollno):
+            obj.cell(row=i,column=4).value=0
+            break
 
 def fetchCase(rollno):
     obj= raised.active
@@ -200,16 +215,32 @@ def fetchCase(rollno):
         caseN = obj.cell(row=i,column=1)
         if(caseN.value == rollno):
             std[rollno]=obj.cell(row=i,column=2).value
+            std["file"]=obj.cell(row=i,column=3).value
             print(std)
             return std
 
-def addCase(data):
+def addCase(r):
+    data=r.form
+    files=r.files
     rollno=data['rollno']
+    print(rollno)
     issue=data['case']
+
+    if bool(files):
+        proof1=files['proofOne']
+        proof1.save(secure_filename(rollno+proof1.filename))
+        os.chdir(os.path.dirname(__file__))
+        pwd=os.getcwd()
+        print(pwd+"/"+rollno+proof1.filename)
+        # proof2=files['proofTwo']
+
     obj = raised.active
     max_row =  obj.max_row
     obj.cell(row=max_row+1,column=1).value=rollno
     obj.cell(row=max_row+1,column=2).value=issue
+    obj.cell(row=max_row+1,column=4).value=True
+    if bool(files):
+        obj.cell(row=max_row+1,column=3).value=pwd+"/"+rollno+proof1.filename
     raised.save(filename="raisedCases.xlsx")
     print("added")
     return jsonify({"saved":True})            
@@ -264,14 +295,22 @@ def admin():
             # print("=======================")
             allCases=fetchCases()
             print("=======================")
-            fetchCase(987654)
+            fetchCase('123456')
             return render_template("admin.html",data=allCases)
            #  return "<html>redirect</html>"
         else:
             return "<html> login</html>"
             print("login")
-    # else:
-    #     request.form['password']
+    # if request.method== 'POST':
+    #     if session.get('logged_in'):
+
+    #         f = request.files['file']
+    #         f.save(secure_filename(f.filename))
+            
+    #         return jsonify({"saved":True})
+    #     else:
+    #         return "<html> login</html>"
+    #         print("login")
 
 @app.route("/cases", methods=["GET","POST"])
 #@login_required
@@ -281,8 +320,17 @@ def cases():
     else:
         newCase=request.form
         print(newCase)
-        addCase(newCase)
+        # addCase(newCase)
+        addCase(request)
         # allCases=fetchCases()
+        return jsonify({"saved":True})
+
+@app.route("/accept", methods=["GET","POST"])
+#@login_required
+def accept():
+    if session.get('logged_in'):
+        rollno=request.form['rollno']
+        acceptCase(rollno)
         return jsonify({"saved":True})
 
 if __name__ == '__main__':
